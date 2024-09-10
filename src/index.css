@@ -13,3 +13,7 @@
       scrollbar-width: none;  /* Firefox */
 }
 }
+
+.hero-bg{
+    background-image: url('src/assets/bg2.png');
+}
