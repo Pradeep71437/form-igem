@@ -1,6 +1,6 @@
 import React from 'react'
 import Logo2 from "../assets/logo2.png"
-import Logo from "../assets/logo2.png"
+import Logo from "../assets/logo1.png"
 const Navbar = () => {
   return (
     <>
