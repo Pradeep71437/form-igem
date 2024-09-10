@@ -1,8 +1,10 @@
 import React, { useState, useCallback } from 'react';
-import html2canvas from 'html2canvas';
+import { jsPDF } from 'jspdf';
 
 const Form = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [thoughts, setThoughts] = useState('');
+  const [dailyLife, setDailyLife] = useState('');
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -13,50 +15,68 @@ const Form = () => {
 
   const handleShare = useCallback(async () => {
     try {
-      // Save the current body styles
-      const originalStyles = {
-        height: document.body.style.height,
-        overflow: document.body.style.overflow,
-      };
+      // Create a new PDF document
+      const pdf = new jsPDF();
 
-      // Temporarily adjust the body to show all content
-      document.body.style.height = 'auto';
-      document.body.style.overflow = 'visible';
+      // Add text content from form responses
+      pdf.setFontSize(16);
+      pdf.text("What's your thought on Microplastics?", 10, 10);
+      pdf.setFontSize(12);
+      pdf.text(thoughts, 10, 20);
 
-      // Take screenshot of the entire webpage
-      const canvas = await html2canvas(document.body, {
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        height: document.body.scrollHeight,
-        windowHeight: document.body.scrollHeight,
-      });
+      pdf.setFontSize(16);
+      pdf.text('How do you encounter Microplastics in your daily life?', 10, 40);
+      pdf.setFontSize(12);
+      pdf.text(dailyLife, 10, 50);
 
-      // Restore original body styles
-      document.body.style.height = originalStyles.height;
-      document.body.style.overflow = originalStyles.overflow;
+      // Check if an image is selected
+      if (selectedImage) {
+        // Fetch the image as a blob and read it as a data URL
+        const img = await fetch(selectedImage);
+        const blob = await img.blob();
+        const reader = new FileReader();
+        
+        reader.onloadend = async () => {
+          // Add the image to the PDF once it is fully loaded
+          pdf.addImage(reader.result, 'JPEG', 10, 70, 50, 50); // Adjust positioning and size as needed
 
-      const dataUrl = canvas.toDataURL('image/png');
+          // Save and share the PDF
+          const pdfBlob = pdf.output('blob');
+          const pdfFile = new File([pdfBlob], 'responses.pdf', { type: 'application/pdf' });
 
-      // Convert the data URL to a blob
-      const response = await fetch(dataUrl);
-      const blob = await response.blob();
-      const file = new File([blob], 'screenshot.png', { type: 'image/png' });
-
-      // Use Web Share API if available
-      if (navigator.share) {
-        await navigator.share({
-          title: 'Check out my screenshot!',
-          text: 'Here is a screenshot of my webpage.',
-          files: [file],
-        });
+          // Share the PDF using Web Share API if available
+          if (navigator.share) {
+            await navigator.share({
+              title: 'Check out my PDF!',
+              text: 'Here is a PDF of my form responses.',
+              files: [pdfFile],
+            });
+          } else {
+            pdf.save('responses.pdf');
+          }
+        };
+        
+        // Convert blob to data URL
+        reader.readAsDataURL(blob);
       } else {
-        alert('Sharing is not supported on this browser. Please try another browser.');
+        // Save and share the PDF if no image is included
+        const pdfBlob = pdf.output('blob');
+        const pdfFile = new File([pdfBlob], 'responses.pdf', { type: 'application/pdf' });
+
+        if (navigator.share) {
+          await navigator.share({
+            title: 'Check out my PDF!',
+            text: 'Here is a PDF of my form responses.',
+            files: [pdfFile],
+          });
+        } else {
+          pdf.save('responses.pdf');
+        }
       }
     } catch (error) {
-      console.error('Error taking screenshot or sharing:', error);
+      console.error('Error generating PDF or sharing:', error);
     }
-  }, []);
+  }, [thoughts, dailyLife, selectedImage]);
 
   return (
     <div className='py-10 flex flex-col gap-8 lg:flex-row'>
@@ -68,6 +88,8 @@ const Form = () => {
             id="thoughts"
             placeholder='Enter your thoughts'
             className='w-full h-44 overflow-y-auto rounded-sm p-2 backdrop-blur-xl bg-white/40'
+            value={thoughts}
+            onChange={(e) => setThoughts(e.target.value)}
           />
         </div>
         
@@ -78,6 +100,8 @@ const Form = () => {
             id="daily_life"
             placeholder='Enter your thoughts'
             className='w-full h-44 overflow-y-auto rounded-sm p-2 backdrop-blur-xl bg-white/40'
+            value={dailyLife}
+            onChange={(e) => setDailyLife(e.target.value)}
           />
         </div>
       </div>
