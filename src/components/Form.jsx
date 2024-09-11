@@ -5,6 +5,8 @@ const Form = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [thoughts, setThoughts] = useState('');
   const [dailyLife, setDailyLife] = useState('');
+  const [team, setTeam] = useState('');
+  const [uname, setUname] = useState('');
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -20,14 +22,24 @@ const Form = () => {
 
       // Add text content from form responses
       pdf.setFontSize(16);
-      pdf.text("What's your thought on Microplastics?", 10, 10);
+      pdf.text("Enter your team name", 10, 10);
       pdf.setFontSize(12);
-      pdf.text(thoughts, 10, 20);
+      pdf.text(team, 10, 20);
+      
+      pdf.setFontSize(16);
+      pdf.text("Enter your name", 10, 40);
+      pdf.setFontSize(12);
+      pdf.text(uname, 10, 50);
 
       pdf.setFontSize(16);
-      pdf.text('How do you encounter Microplastics in your daily life?', 10, 40);
+      pdf.text("What's your thought on Microplastics?", 10, 70);
       pdf.setFontSize(12);
-      pdf.text(dailyLife, 10, 50);
+      pdf.text(thoughts, 10, 80);
+
+      pdf.setFontSize(16);
+      pdf.text('How do you encounter Microplastics in your daily life?', 10, 100);
+      pdf.setFontSize(12);
+      pdf.text(dailyLife, 10, 110);
 
       // Check if an image is selected
       if (selectedImage) {
@@ -76,11 +88,32 @@ const Form = () => {
     } catch (error) {
       console.error('Error generating PDF or sharing:', error);
     }
-  }, [thoughts, dailyLife, selectedImage]);
+  }, [team, uname, thoughts, dailyLife, selectedImage]);
 
   return (
     <div className='py-10 flex flex-col gap-8 lg:flex-row'>
       <div className='flex flex-col gap-8 lg:w-3/5'>
+      <div className='flex flex-col justify-between'>
+          <h1 className='font-semibold'>Enter your team name</h1>
+          <textarea
+            name="team"
+            id="team"
+            className='w-full h-9 overflow-y-auto rounded-sm p-2 backdrop-blur-xl bg-white/40'
+            value={team}
+            onChange={(e) => setTeam(e.target.value)}
+          />
+          </div>
+          <div className='flex flex-col justify-between'>
+          <h1 className='font-semibold'>Enter your name</h1>
+          <textarea
+            name="uname"
+            id="uname"
+            className='w-full h-9 overflow-y-auto rounded-sm p-2 backdrop-blur-xl bg-white/40'
+            value={uname}
+            onChange={(e) => setUname(e.target.value)}
+          />
+          </div>
+        
         <div className='flex flex-col gap-2'>
           <h1 className='font-semibold'>What's your thought on Microplastics?</h1>
           <textarea
