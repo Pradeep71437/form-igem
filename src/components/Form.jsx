@@ -118,8 +118,7 @@ const Form = () => {
           Choose Image
         </label>
         <ol className=''style={{ listStyleType: 'disc', marginLeft: '20px' }}>
-          <li>Take a selfie with plastic.</li>
-          <li>Let the image be clear and less than 5Kb</li>
+          <li>Take a selfie with plastic or any photo of the plastic</li>
           <li>File Format: JPEG, PNG, or GIF.</li>
           <li>Resolution: Minimum 800x600 pixels.</li>
           <li>File Size: Maximum 5 MB.</li>
