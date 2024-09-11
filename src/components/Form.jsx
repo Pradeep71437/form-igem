@@ -50,7 +50,7 @@ const Form = () => {
         
         reader.onloadend = async () => {
           // Add the image to the PDF once it is fully loaded
-          pdf.addImage(reader.result, 'JPEG', 10, 70, 50, 50); // Adjust positioning and size as needed
+          pdf.addImage(reader.result, 'JPEG', 10, 130, 50, 50); // Adjust positioning and size as needed
 
           // Save and share the PDF
           const pdfBlob = pdf.output('blob');
