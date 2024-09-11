@@ -86,7 +86,7 @@ const Form = () => {
           <textarea
             name="thoughts"
             id="thoughts"
-            placeholder='Enter your thoughts'
+            placeholder='Example: Microplastics are small, synthetic particles from deteriorated plastic products. They pose serious environmental risks as they can be ingested by marine life and enter the food chain, affecting ecosystems and human health. Addressing microplastic pollution involves reducing plastic production, enhancing waste management, and supporting recycling and clean-up efforts.'
             className='w-full h-44 overflow-y-auto rounded-sm p-2 backdrop-blur-xl bg-white/40'
             value={thoughts}
             onChange={(e) => setThoughts(e.target.value)}
@@ -98,7 +98,7 @@ const Form = () => {
           <textarea
             name="daily_life"
             id="daily_life"
-            placeholder='Enter your thoughts'
+            placeholder='Example: I encounter microplastics daily through personal care products like exfoliating scrubs that contain microbeads. I also notice them in tap water and even in some of the food I eat. Additionally, my synthetic clothes shed tiny particles when washed. These experiences make me more aware of the importance of reducing plastic use and choosing products that are less harmful to the environment.'
             className='w-full h-44 overflow-y-auto rounded-sm p-2 backdrop-blur-xl bg-white/40'
             value={dailyLife}
             onChange={(e) => setDailyLife(e.target.value)}
@@ -107,7 +107,7 @@ const Form = () => {
       </div>
       
       <div className='flex flex-col gap-4 lg:w-2/5'>
-        <h1>Upload image</h1>
+        <h1 className='font-semibold'>Upload image</h1>
         <label className='inline-block w-fit cursor-pointer px-4 py-2 bg-white/50 backdrop-blur-md text-black font-semibold rounded-md shadow-md transition duration-300 ease-in-out'>
           <input
             type="file"
@@ -117,6 +117,16 @@ const Form = () => {
           />
           Choose Image
         </label>
+        <ol className=''style={{ listStyleType: 'disc', marginLeft: '20px' }}>
+          <li>Take a selfie with plastic.</li>
+          <li>Let the image be clear and less than 5Kb</li>
+          <li>File Format: JPEG, PNG, or GIF.</li>
+          <li>Resolution: Minimum 800x600 pixels.</li>
+          <li>File Size: Maximum 5 MB.</li>
+          <li>Content: Image must be relevant to the topic; avoid offensive or inappropriate content</li>
+          <li>Quality: Ensure the image is clear and well-lit, with minimal distortion.</li>
+          <li>Labeling: Include a brief description or caption explaining the image.</li>
+        </ol>
         
         {selectedImage && (
           <div className=''>
